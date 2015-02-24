@@ -10,7 +10,6 @@
   <div class="col-sm-9">
 
   <p>Registrations are permanent, read only copies of a project. Registration saves the state of a project at a particular point in time - such as right before data collection, or right when a manuscript is submitted.</p>
-    <p>
      % if node["registration_count"]:
         <div mod-meta='{
             "tpl": "util/render_nodes.mako",
@@ -18,14 +17,12 @@
             "replace": true
             }'></div>
     % elif node['node_type'] != 'project':
-        To register this component, you must <a href="${parent_node['url']}registrations"><b>register its parent project</b></a> (<a href="${parent_node['url']}">${parent_node['title']}</a>).
+        <p>To register this component, you must <a href="${parent_node['url']}registrations"><b>register its parent project</b></a> (<a href="${parent_node['url']}">${parent_node['title']}</a>).</p>
     % else:
-        There have been no registrations of this ${node['node_type']}.
+        <p>There have been no registrations of this ${node['node_type']}.
         For a list of the most viewed and most recent public registrations on the
-        Open Science Framework, click <a href="/explore/activity/">here</a>.
-
+        Open Science Framework, click <a href="/explore/activity/">here</a>.</p>
     % endif
-    </p>
 
   </div>
   <div class="col-sm-3">
