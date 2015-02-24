@@ -8,7 +8,10 @@
 
 <div class="row">
   <div class="col-sm-9">
-      % if node["registration_count"]:
+
+  <p>Registrations are permanent, read only copies of a project. Registration saves the state of a project at a particular point in time - such as right before data collection, or right when a manuscript is submitted.</p>
+    <p>
+     % if node["registration_count"]:
         <div mod-meta='{
             "tpl": "util/render_nodes.mako",
             "uri": "${node["api_url"]}get_registrations/",
@@ -22,6 +25,7 @@
         Open Science Framework, click <a href="/explore/activity/">here</a>.
 
     % endif
+    </p>
 
   </div>
   <div class="col-sm-3">
