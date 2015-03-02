@@ -19,9 +19,11 @@
     % elif node['node_type'] != 'project':
         <p>To register this component, you must <a href="${parent_node['url']}registrations"><b>register its parent project</b></a> (<a href="${parent_node['url']}">${parent_node['title']}</a>).</p>
     % else:
+
         <p>There have been no registrations of this ${node['node_type']}.
-        For a list of the most viewed and most recent public registrations on the
-        Open Science Framework, click <a href="/explore/activity/">here</a>.</p>
+        See a list of the <a href="/explore/activity/#newPublicRegistrations">newest</a> 
+        and <a href="/explore/activity/#popularPublicRegistrations">most viewed</a> public registrations on the
+        Open Science Framework.</p>
     % endif
 
   </div>
