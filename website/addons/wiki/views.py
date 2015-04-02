@@ -354,7 +354,7 @@ def project_wiki_edit_post(auth, wname, **kwargs):
 
     if ret['status'] == 'success':
         # Send notification emails to people @mentioned
-        wiki_notifs.email_mentions(node, wname, wiki_page)  # TODO: do we capture status here?
+        wiki_notifs.email_mentions(wiki_page.content, form_wiki_content)  # TODO: do we capture status here?
 
     return ret, http.FOUND, None, redirect_url
 

@@ -54,7 +54,7 @@ def new_mentions(line_strings):
     return new_person_hashes
 
 
-def email_mentions(node, wiki_name, wiki_page_obj):
+def email_mentions(old_content, new_content):
     """
     Given a wiki page object, check the content for newly @mentioned users.
     Send email notifications as appropriate.
@@ -63,51 +63,7 @@ def email_mentions(node, wiki_name, wiki_page_obj):
     :return: TODO
     """
     # Find users newly mentioned in the wiki
-    old_wiki_content = ""
-    new_wiki_content = ""
+    old_only, new_only = diff_snippets(old_content, new_content)
+    person_mentions = new_mentions(new_only)
 
-    # Find the text of the previous revision
-    key = to_mongo_key(wiki_name)
-    version_keys = list(reversed(node.wiki_pages_versions[key]))  # Time ordered, newest first
-    # FIXME: What if a user is reading an old version? Prev version may not always be second-newest
-    new_ver_id = version_keys[0]  # Get newly created record (caller doesn't have reference to it)
-
-
-
-    prev_ver_id = version_keys[1] if len(version_keys) > 1 else None
-    # TODO: make sure we're diffing correct versions
-    if prev_ver_id is None:
-        print "no prev node found"
-        prev_content = ""
-    else:
-        prev_node = NodeWikiPage.load(prev_ver_id)
-        prev_content = prev_node.content
-        print "then", prev_node._id, prev_content
-
-    print "now", wiki_page_obj._id, wiki_page_obj.content
-    print "CHANGES", diff_snippets(prev_content, wiki_page_obj.content)
-
-
-    #
-    #
-    #
-    # # # Skip if wiki_page doesn't exist; happens on new projects before
-    # # # default "home" page is created
-    # # if key not in node.wiki_pages_versions:
-    # #     return []
-    #
-    # versions = [
-    #     NodeWikiPage.load(version_wiki_id)
-    #     for version_wiki_id in node.wiki_pages_versions[key]
-    # ]
-    #
-    # print "Versions!", [(v.user, v.content) for v in versions]
-    #
-    # print "just versions", node.wiki_pages_versions[key]
-
-
-    # FIXME? pass in a dummy anon status, since we're only acquiring page history here- not checking user identity
-    #versions = _get_wiki_versions(node, wiki_name, anonymous=False)    # TODO: Implement. Find how to get old version of wiki page.
-
-
-    # TODO: Where does the email notification template live? (It's not part of the wiki)
+    # TODO: Write email template to send emails
