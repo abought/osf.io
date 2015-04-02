@@ -359,7 +359,7 @@ def project_wiki_edit_post(auth, wname, **kwargs):
                    "node_title": node.title,
                    "node_id": node._id,
                    "page_name": wiki_name,
-                   "url": redirect_url}
+                   "url": node.web_url_for('project_wiki_view', wname=wiki_name, _guid=True, _absolute=True)}
 
         wiki_notifs.email_mentions(wiki_page.content,
                                    form_wiki_content,
