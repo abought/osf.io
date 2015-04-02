@@ -12,6 +12,7 @@ from framework.auth.utils import privacy_info_handle
 from framework.flask import redirect
 
 from website.addons.wiki import settings
+from website.addons.wiki import notifications as wiki_notifs
 from website.addons.wiki import utils as wiki_utils
 from website.profile.utils import get_gravatar
 from website.project.views.node import _view_project
@@ -350,6 +351,11 @@ def project_wiki_edit_post(auth, wname, **kwargs):
         # update_node_wiki will create a new wiki page because a page
         node.update_node_wiki(wiki_name, form_wiki_content, auth)
         ret = {'status': 'success'}
+
+    if ret['status'] == 'success':
+        # Send notification emails to people @mentioned
+        wiki_notifs.email_mentions(node, wname, wiki_page)  # TODO: do we capture status here?
+
     return ret, http.FOUND, None, redirect_url
 
 
