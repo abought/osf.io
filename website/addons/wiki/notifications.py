@@ -6,6 +6,7 @@ import re
 from framework.mongo.utils import to_mongo_key
 
 from website.notifications.emails import send
+from framework.auth.core import User
 from .model import NodeWikiPage
 
 
@@ -74,9 +75,14 @@ def email_mentions(old_content, new_content, context):
 
     # TODO: make email url absolute
 
-    context["gravatar_url"] = user_dummy.gravatar_url
-    send([user_dummy],
-         "email_transactional",
-         sender_node._id,
-         "wiki_mention",
-         **context)
+    for user_id in person_mentions:
+        user = User.load(user_id)
+        if user is not None: # TODO: Report user mentions that do not correspond to an actual user
+            #context["gravatar_url"] = user_dummy.gravatar_url
+
+            send([user_dummy],
+                 "email_transactional",
+                 sender_node._id,
+                 "wiki_mention",
+                 gravatar_url=user_dummy.gravatar_url, # part of kwargs without modifying context. Hack.
+                 **context)
