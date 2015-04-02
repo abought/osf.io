@@ -2312,6 +2312,8 @@ class Node(GuidStoredObject, AddonModelMixin):
         )
         self.save()
 
+        return new_page
+
     # TODO: Move to wiki add-on
     def rename_node_wiki(self, name, new_name, auth):
         """Rename the node's wiki page with new name.

@@ -5,6 +5,7 @@ import re
 
 from framework.mongo.utils import to_mongo_key
 
+from website.notifications.emails import send
 from .model import NodeWikiPage
 
 
@@ -54,16 +55,36 @@ def new_mentions(line_strings):
     return new_person_hashes
 
 
-def email_mentions(old_content, new_content):
+def email_mentions(old_content, new_content, context):
     """
     Given a wiki page object, check the content for newly @mentioned users.
     Send email notifications as appropriate.
 
-    :param wiki_page_obj: The DB object representing this wiki page
-    :return: TODO
+    :param old_content:
+    :param new_content:
+    :param context: dict w/keys editor, node, project_name, page_name, and page_url
+    :return:
     """
+
     # Find users newly mentioned in the wiki
     old_only, new_only = diff_snippets(old_content, new_content)
     person_mentions = new_mentions(new_only)
 
     # TODO: Write email template to send emails
+    # EMAIL should include:
+    # - user name of person commenting, (user)
+    # - project name containing node
+    # - page name containing the change
+    # - URL of that wiki page
+
+    # TODO: Adapt this to use it!
+    # TODO: Email template should move user-->user.fullname
+    user_dummy = context['editor']
+    node = context["node"]
+
+    # TODO: make email url absolute
+    send([user_dummy],
+         "email_transactional",
+         node._id,
+         "wiki_mention",
+         **context)

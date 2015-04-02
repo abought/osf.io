@@ -11,6 +11,7 @@ from website.util import web_url_for
 
 LOCALTIME_FORMAT = '%H:%M on %A, %B %d %Z'
 EMAIL_SUBJECT_MAP = {
+    'wiki_mention': '${editor.fullname} mentioned you on project wiki',
     'comments': '${commenter.fullname} commented on "${title}".',
     'comment_replies': '${commenter.fullname} replied to your comment on "${title}".'
 }
@@ -33,7 +34,10 @@ def email_transactional(subscribed_user_ids, uid, event, **context):
         context['localized_timestamp'] = localize_timestamp(context.get('timestamp'), user)
         message = mails.render_message(template, **context)
 
-        if context.get('commenter')._id != user._id:
+        commenter = context.get('commenter')
+        if commenter and commenter._id == user._id:
+            pass  # Do not email the person who just commented
+        else:
             mails.send_mail(
                 to_addr=email,
                 mail=mails.TRANSACTIONAL,
