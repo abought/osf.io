@@ -817,6 +817,22 @@ class Node(GuidStoredObject, AddonModelMixin, IdentifierMixin):
         if save:
             self.save()
 
+    def update_permissions(self, user, permissions, save=False):
+        """
+        Set user permissions to desired list. Return False if no change.
+
+        :param User user:
+        :param list permissions:
+        :param save:
+        :return: bool Whether or not permissions were changed
+        """
+        old_permissions = self.get_permissions(user)
+        if set(permissions) == set(old_permissions):
+            return False
+        else:
+            self.set_permissions(user, permissions=permissions, save=save)
+            return True
+
     def has_permission(self, user, permission, check_parent=True):
         """Check whether user has permission.
 
@@ -827,7 +843,7 @@ class Node(GuidStoredObject, AddonModelMixin, IdentifierMixin):
         if user is None:
             logger.warn('User is ``None``.')
             return False
-        if permission in self.permissions.get(user._id, []):
+        if permission in self.get_permissions(user):
             return True
         if permission == 'read' and check_parent:
             return self.is_admin_parent(user)
@@ -922,7 +938,7 @@ class Node(GuidStoredObject, AddonModelMixin, IdentifierMixin):
         elif not visible and user._id in self.visible_contributor_ids:
             self.visible_contributor_ids.remove(user._id)
         else:
-            return
+            return False
         message = (
             NodeLog.MADE_CONTRIBUTOR_VISIBLE
             if visible
@@ -941,6 +957,8 @@ class Node(GuidStoredObject, AddonModelMixin, IdentifierMixin):
             )
         if save:
             self.save()
+
+        return True
 
     def can_comment(self, auth):
         if self.comment_level == 'public':
@@ -2228,6 +2246,32 @@ class Node(GuidStoredObject, AddonModelMixin, IdentifierMixin):
         else:
             return False
 
+    def update_contributor(self, contributor, permissions=None, visible=True,
+                           auth=None, log=True, save=False):
+        """
+        Update the permissions and visibility settings for an existing contributor
+
+        :param User contributor: The contributor to be updated
+        :param list permissions: Permissions to grant to the contributor
+        :param bool visible: Contributor is visible in project dashboard
+        :param Auth auth: All the auth information including user, API key
+        :param bool log: Add log to self
+        :param bool save: Save after adding contributor
+        :returns: Whether contributor was updated
+        """
+
+        ## TODO: Philosophical debate over where this should live...
+        if contributor  not in self.contributors:
+            return self.add_contributor(contributor, permissions=permissions, visible=visible,
+                                        auth=auth, log=log, save=save)
+
+        # TODO: If the failure mechanism is based on exceptions, what happens if contributor 3 of 5 fails? Will part of the request not set valid permissions?
+        vis_res = self.set_visible(contributor, visible=True, log=False)
+        perm_res = self.update_permissions(contributor, permissions, save=save)
+
+        was_changed = bool(vis_res or perm_res)
+        return was_changed
+
     def add_contributors(self, contributors, auth=None, log=True, save=False):
         """Add multiple contributors
 
@@ -2236,12 +2280,30 @@ class Node(GuidStoredObject, AddonModelMixin, IdentifierMixin):
         :param log: Add log to self
         :param save: Save after adding contributor
         """
+        contribs_new, contribs_updated = [], []
         for contrib in contributors:
-            self.add_contributor(
-                contributor=contrib['user'], permissions=contrib['permissions'],
-                visible=contrib['visible'], auth=auth, log=False, save=False,
-            )
-        if log and contributors:
+            # TODO: add_contributor does this... should we here as well? When is or isn't it necessary to check whether user account was merged?)
+            # contrib_to_add = contrib['user'].merged_by if contrib['user'].is_merged else contrib['user']
+
+            user, permissions, visible = contrib['user'], contrib['permissions'], contrib['visible']
+
+            if user not in self.contributors:
+                self.add_contributor(
+                    contributor=user,
+                    permissions=permissions,
+                    visible=visible,
+                    auth=auth,
+                    log=False,
+                    save=False)
+                contribs_new.append(user)
+            else:
+                # TODO: This might be better located in a different method... but the POST to contributors points to this function, so we need an update mechanism
+                update_res = self.update_contributor(user, permissions=permissions, visible=visible, save=False)
+                if update_res:
+                    contribs_updated.append(user)
+
+        # TODO: Verify correct events are being logged
+        if log and contribs_new:
             self.add_log(
                 action=NodeLog.CONTRIB_ADDED,
                 params={
@@ -2249,12 +2311,28 @@ class Node(GuidStoredObject, AddonModelMixin, IdentifierMixin):
                     'node': self._primary_key,
                     'contributors': [
                         contrib['user']._id
-                        for contrib in contributors
+                        for contrib in contribs_new
                     ],
                 },
                 auth=auth,
                 save=False,
             )
+
+        if log and contribs_updated:
+            self.add_log(
+                action=NodeLog.PERMISSIONS_UPDATED,
+                params={
+                    'project': self.parent_id,
+                    'node': self._primary_key,
+                    'contributors': [
+                        contrib['user']._id
+                        for contrib in contribs_updated
+                    ],
+                },
+                auth=auth,
+                save=False,
+            )
+
         if save:
             self.save()
 
