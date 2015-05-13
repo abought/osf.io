@@ -11,6 +11,74 @@
 
 Solutions to many common issues may be found at the [OSF Developer Docs](http://cosdev.readthedocs.org/).
 
+## Running the OSF
+
+If you have already installed all of the required services and python packages, then you can start a working local 
+test server with the following sequence:
+
+```bash
+invoke mongo -d  # Runs mongod as a daemon
+invoke mailserver
+invoke rabbitmq
+invoke celery_worker
+invoke elasticsearch
+invoke assets -dw
+invoke server
+```
+
+Note that some or all of these commands will run attached to a console, and therefore the commands may need to be 
+run in separate terminals.
+
+### Optional extras
+
+Some functionality depends on additional services that will not be started using the sequence above. 
+For most development tasks, it is sufficient to run the OSF without these services, except as noted below. 
+
+TODO: Write this part!
+TODO: Sharejs
+TODO: Waterbutler
+
+
+
+## Installation
+
+These instructions assume a working knowledge of package managers and the command line. 
+For a detailed step-by-step walkthrough suitable for new programmers, consult the [COS Development Docs](http://cosdev.readthedocs.org/en/latest/osf/setup.html).
+
+### Pre-requisites
+
+Before attempting to run OSF setup commands, be sure that your system meets the following minimum requirements.
+ 
+#### Mac OS
+
+The following packages must be installed:
+
+- [XCode](https://developer.apple.com/xcode/downloads/)  (Open XCode at least once in order to accept the license)
+    - Xcode command line tools: `xcode-select --install` must also be run separately, even on 10.10.3, otherwise will get First error: "include libxml/xmlversion.h" error 
+
+- [Homebrew](http://brew.sh/) package manager
+    - Run `brew update` and `brew upgrade` at least once???
+- Check if Java is installed (TODO: Write instructions?)
+    -   `brew install Caskroom cask/java` (may need to enter a password)
+- Python (2.7.x) (may already be installed on Mac OS)  - I did `brew install python` to make sure a local and up to date copy was available, but sudo easy_install pip is probably acceptable alternative)
+    - pip (`easy_install pip`)
+    - virtualenv
+
+Then follow osf quickstart instructions from there...
+
+
+
+#### Linux
+
+TODO: Mention GPG etc
+
+
+
+
+
+
+
+
 ## Quickstart
 
 These instructions should work on Mac OSX >= 10.7
@@ -353,18 +421,4 @@ $ invoke server --live
 ```
 
 This will make your browser automatically refresh whenever a code change is made.
-
-## Summary
-
-If you have all the above services installed, you can start *everything* up with this sequence
-
-```bash
-invoke mongo -d  # Runs mongod as a daemon
-invoke mailserver
-invoke rabbitmq
-invoke celery_worker
-invoke elasticsearch
-invoke assets -dw
-invoke server
-```
 
