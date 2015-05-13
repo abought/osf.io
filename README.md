@@ -1,16 +1,15 @@
 # OSF
 
 
+## Development
 - `master` Build Status: [![Build Status](https://travis-ci.org/CenterForOpenScience/osf.io.svg?branch=master)](https://travis-ci.org/CenterForOpenScience/osf.io)
 - `develop` Build Status: [![Build Status](https://travis-ci.org/CenterForOpenScience/osf.io.svg?branch=master)](https://travis-ci.org/CenterForOpenScience/osf.io)
 - Public Repo: https://github.com/CenterForOpenScience/osf.io/
 - Issues: https://github.com/CenterForOpenScience/osf.io/issues?state=open
-- Huboard: https://huboard.com/CenterForOpenScience/osf.io#/
-- Docs: http://cosdev.rtfd.org/
 
 ## Help
 
-Solutions to many common issues may be found at the [OSF Developer Docs](http://cosdev.rtfd.org/).
+Solutions to many common issues may be found at the [OSF Developer Docs](http://cosdev.readthedocs.org/).
 
 ## Quickstart
 
