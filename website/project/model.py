@@ -2310,7 +2310,7 @@ class Node(GuidStoredObject, AddonModelMixin, IdentifierMixin):
                     'project': self.parent_id,
                     'node': self._primary_key,
                     'contributors': [
-                        contrib['user']._id
+                        contrib._id
                         for contrib in contribs_new
                     ],
                 },
@@ -2325,7 +2325,7 @@ class Node(GuidStoredObject, AddonModelMixin, IdentifierMixin):
                     'project': self.parent_id,
                     'node': self._primary_key,
                     'contributors': [
-                        contrib['user']._id
+                        contrib._id
                         for contrib in contribs_updated
                     ],
                 },
