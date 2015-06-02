@@ -9,7 +9,7 @@ from website.routes import OsfWebRenderer
 
 from . import views
 
-TEMPLATE_DIR = '../addons/wiki/templates/'
+TEMPLATE_DIR = '../addons/wiki/templates/'  # TODO: Fragile
 
 settings_routes = {
     'rules': [],
@@ -18,10 +18,15 @@ settings_routes = {
 
 widget_routes = {
     'rules': [
-        Rule([
-            '/project/<pid>/wiki/widget/',
-            '/project/<pid>/node/<nid>/wiki/widget/',
-        ], 'get', views.wiki_widget, json_renderer),
+        Rule(
+            [
+                '/project/<pid>/wiki/widget/',
+                '/project/<pid>/node/<nid>/wiki/widget/',
+            ],
+            'get',
+            views.wiki_widget,
+            json_renderer
+        ),
     ],
     'prefix': '/api/v1',
 }
@@ -32,9 +37,10 @@ page_routes = {
     'rules': [
 
         # Home (Base) | GET
-        Rule([
-            '/project/<pid>/wiki/',
-            '/project/<pid>/node/<nid>/wiki/'
+        Rule(
+            [
+                '/project/<pid>/wiki/',
+                '/project/<pid>/node/<nid>/wiki/'
             ],
             'get',
             views.project_wiki_home,
@@ -42,9 +48,10 @@ page_routes = {
         ),
 
         # View (Id) | GET
-        Rule([
-            '/project/<pid>/wiki/id/<wid>/',
-            '/project/<pid>/node/<nid>/wiki/id/<wid>/',
+        Rule(
+            [
+                '/project/<pid>/wiki/id/<wid>/',
+                '/project/<pid>/node/<nid>/wiki/id/<wid>/',
             ],
             'get',
             views.project_wiki_id_page,
@@ -52,9 +59,10 @@ page_routes = {
         ),
 
         # Wiki | GET
-        Rule([
-            '/project/<pid>/wiki/<wname>/',
-            '/project/<pid>/node/<nid>/wiki/<wname>/',
+        Rule(
+            [
+                '/project/<pid>/wiki/<wname>/',
+                '/project/<pid>/node/<nid>/wiki/<wname>/',
             ],
             'get',
             views.project_wiki_view,
@@ -62,9 +70,10 @@ page_routes = {
         ),
 
         # Edit | GET (legacy url, trigger redirect)
-        Rule([
-            '/project/<pid>/wiki/<wname>/edit/',
-            '/project/<pid>/node/<nid>/wiki/<wname>/edit/',
+        Rule(
+            [
+                '/project/<pid>/wiki/<wname>/edit/',
+                '/project/<pid>/node/<nid>/wiki/<wname>/edit/',
             ],
             'get',
             views.project_wiki_edit,
@@ -72,9 +81,10 @@ page_routes = {
         ),
 
         # Compare | GET (legacy url, trigger redirect)
-        Rule([
-            '/project/<pid>/wiki/<wname>/compare/<int:wver>/',
-            '/project/<pid>/node/<nid>/wiki/<wname>/compare/<int:wver>/',
+        Rule(
+            [
+                '/project/<pid>/wiki/<wname>/compare/<int:wver>/',
+                '/project/<pid>/node/<nid>/wiki/<wname>/compare/<int:wver>/',
             ],
             'get',
             views.project_wiki_compare,
@@ -82,9 +92,10 @@ page_routes = {
         ),
 
         # Edit | POST
-        Rule([
-            '/project/<pid>/wiki/<wname>/',
-            '/project/<pid>/node/<nid>/wiki/<wname>/',
+        Rule(
+            [
+                '/project/<pid>/wiki/<wname>/',
+                '/project/<pid>/node/<nid>/wiki/<wname>/',
             ],
             'post',
             views.project_wiki_edit_post,
@@ -99,9 +110,10 @@ api_routes = {
     'rules': [
 
         # Home (Base) : GET
-        Rule([
-            '/project/<pid>/wiki/',
-            '/project/<pid>/node/<nid>/wiki/',
+        Rule(
+            [
+                '/project/<pid>/wiki/',
+                '/project/<pid>/node/<nid>/wiki/',
             ],
             'get',
             views.project_wiki_home,
@@ -109,9 +121,10 @@ api_routes = {
         ),
 
         # Draft : GET
-        Rule([
-            '/project/<pid>/wiki/<wname>/draft/',
-            '/project/<pid>/node/<nid>/wiki/<wname>/draft/',
+        Rule(
+            [
+                '/project/<pid>/wiki/<wname>/draft/',
+                '/project/<pid>/node/<nid>/wiki/<wname>/draft/',
             ],
             'get',
             views.wiki_page_draft,
@@ -120,11 +133,12 @@ api_routes = {
 
         # Content : GET
         # <wver> refers to a wiki page's version number
-        Rule([
-            '/project/<pid>/wiki/<wname>/content/',
-            '/project/<pid>/node/<nid>/wiki/<wname>/content/',
-            '/project/<pid>/wiki/<wname>/content/<wver>/',
-            '/project/<pid>/node/<nid>/wiki/<wname>/content/<wver>/',
+        Rule(
+            [
+                '/project/<pid>/wiki/<wname>/content/',
+                '/project/<pid>/node/<nid>/wiki/<wname>/content/',
+                '/project/<pid>/wiki/<wname>/content/<wver>/',
+                '/project/<pid>/node/<nid>/wiki/<wname>/content/<wver>/',
             ],
             'get',
             views.wiki_page_content,
@@ -132,27 +146,30 @@ api_routes = {
         ),
 
         # Validate | GET
-        Rule([
-            '/project/<pid>/wiki/<wname>/validate/',
-            '/project/<pid>/node/<nid>/wiki/<wname>/validate/',
+        Rule(
+            [
+                '/project/<pid>/wiki/<wname>/validate/',
+                '/project/<pid>/node/<nid>/wiki/<wname>/validate/',
             ],
             'get',
             views.project_wiki_validate_name, json_renderer
         ),
 
         # Edit | POST
-        Rule([
-            '/project/<pid>/wiki/<wname>/edit/',
-            '/project/<pid>/node/<nid>/wiki/<wname>/edit/',
+        Rule(
+            [
+                '/project/<pid>/wiki/<wname>/edit/',
+                '/project/<pid>/node/<nid>/wiki/<wname>/edit/',
             ],
             'post',
             views.project_wiki_edit_post, json_renderer
         ),
 
         # Rename : PUT
-        Rule([
-            '/project/<pid>/wiki/<wname>/rename/',
-            '/project/<pid>/node/<nid>/wiki/<wname>/rename/',
+        Rule(
+            [
+                '/project/<pid>/wiki/<wname>/rename/',
+                '/project/<pid>/node/<nid>/wiki/<wname>/rename/',
             ],
             'put',
             views.project_wiki_rename,
@@ -160,9 +177,10 @@ api_routes = {
         ),
 
         # Delete : DELETE
-        Rule([
-            '/project/<pid>/wiki/<wname>/',
-            '/project/<pid>/node/<nid>/wiki/<wname>/',
+        Rule(
+            [
+                '/project/<pid>/wiki/<wname>/',
+                '/project/<pid>/node/<nid>/wiki/<wname>/',
             ],
             'delete',
             views.project_wiki_delete,
