@@ -321,23 +321,22 @@
 </div>
 
 <%def name="javascript_bottom()">
-<% import json %>
 ${parent.javascript_bottom()}
 <script>
 
-    var canEdit = ${json.dumps(user['can_edit'])};
+    var canEdit = ${user['can_edit'] | json};
 
-    var canEditPageName = canEdit && ${json.dumps(
+    var canEditPageName = canEdit && ${(
         wiki_id and wiki_name != 'home'
-    )};
+    ) | json};
 
     window.contextVars = window.contextVars || {};
     window.contextVars.wiki = {
         canEdit: canEdit,
         canEditPageName: canEditPageName,
-        usePythonRender: ${json.dumps(use_python_render)},
-        versionSettings: ${json.dumps(version_settings) | n},
-        panelsUsed: ${json.dumps(panels_used) | n},
+        usePythonRender: ${use_python_render | json},
+        versionSettings: ${version_settings | json, n},
+        panelsUsed: ${panels_used | json, n},
         urls: {
             draft: '${urls['api']['draft']}',
             content: '${urls['api']['content']}',

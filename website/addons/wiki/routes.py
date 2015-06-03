@@ -44,7 +44,8 @@ page_routes = {
             ],
             'get',
             views.project_wiki_home,
-            OsfWebRenderer(os.path.join(TEMPLATE_DIR, 'edit.mako'))
+            OsfWebRenderer(os.path.join(TEMPLATE_DIR, 'edit.mako'),
+                           safe=True)
         ),
 
         # View (Id) | GET
@@ -55,7 +56,8 @@ page_routes = {
             ],
             'get',
             views.project_wiki_id_page,
-            OsfWebRenderer(os.path.join(TEMPLATE_DIR, 'edit.mako'))
+            OsfWebRenderer(os.path.join(TEMPLATE_DIR, 'edit.mako'),
+                           safe=True)
         ),
 
         # Wiki | GET
@@ -66,7 +68,8 @@ page_routes = {
             ],
             'get',
             views.project_wiki_view,
-            OsfWebRenderer(os.path.join(TEMPLATE_DIR, 'edit.mako'))
+            OsfWebRenderer(os.path.join(TEMPLATE_DIR, 'edit.mako'),
+                           safe=True)
         ),
 
         # Edit | GET (legacy url, trigger redirect)
@@ -77,7 +80,8 @@ page_routes = {
             ],
             'get',
             views.project_wiki_edit,
-            OsfWebRenderer(os.path.join(TEMPLATE_DIR, 'edit.mako'))
+            OsfWebRenderer(os.path.join(TEMPLATE_DIR, 'edit.mako'),
+                           safe=True)
         ),
 
         # Compare | GET (legacy url, trigger redirect)
@@ -88,7 +92,8 @@ page_routes = {
             ],
             'get',
             views.project_wiki_compare,
-            OsfWebRenderer(os.path.join(TEMPLATE_DIR, 'edit.mako'))
+            OsfWebRenderer(os.path.join(TEMPLATE_DIR, 'edit.mako'),
+                           True)
         ),
 
         # Edit | POST
@@ -99,7 +104,8 @@ page_routes = {
             ],
             'post',
             views.project_wiki_edit_post,
-            OsfWebRenderer(os.path.join(TEMPLATE_DIR, 'edit.mako'))
+            OsfWebRenderer(os.path.join(TEMPLATE_DIR, 'edit.mako'),
+                           safe=True)
         ),
     ]
 
