@@ -1,5 +1,4 @@
 <%
-    import json
     is_project = node['node_type'] == 'project'
 %>
 
@@ -26,7 +25,7 @@
                             <li><a href="#" data-toggle="tooltip" title="Parent project is private" data-placement="bottom" style="cursor: default"> <i class="fa fa-level-down fa-rotate-180 text-muted"></i>  </a></li>
                         % endif
                     % endif
-                        <li><a href="${node['url']}"  class="project-title"> ${node['title'] | n}  </a></li>
+                        <li><a href="${node['url']}"  class="project-title"> ${node['title']}  </a></li>
                         <li><a href="${node['url']}files/">Files</a></li>
                         <!-- Add-on tabs -->
                         % for addon in addons_enabled:

@@ -31,7 +31,6 @@ ${next.body()}
 
 <script>
 
-    <% import json %>
     ## TODO: Move this logic into badges add-on
     % if 'badges' in addons_enabled and badges and badges['can_award']:
     ## TODO: port to commonjs
@@ -60,29 +59,30 @@ ${next.body()}
     window.contextVars = $.extend(true, {}, window.contextVars, {
         currentUser: {
             ## TODO: Abstract me
-            username: ${json.dumps(user['username']) | n},
+            username: ${user['username'] | json, n},
             id: '${user_id}',
             urls: {api: userApiUrl},
-            isContributor: ${json.dumps(user.get('is_contributor', False))},
-            fullname: ${json.dumps(user['fullname']) | n}
+            isContributor: ${user.get('is_contributor', False) | json},
+            fullname: ${user['fullname'] | json, n },
+            ## TODO: Can explicit escaping of fullname be turned off? What addons/projects use fullname downstream?
         },
         node: {
             ## TODO: Abstract me
             id: nodeId,
-            title: ${json.dumps(node['title']) | n},
+            title: ${node['title'] | json, n},
             urls: {
                 api: nodeApiUrl,
-                web: ${json.dumps(node['url'])},
-                update: ${json.dumps(node['update_url'])}
+                web: ${node['url'] | json},
+                update: ${node['update_url'] | json}
             },
-            isPublic: ${json.dumps(node.get('is_public', False))},
-            piwikSiteID: ${json.dumps(node.get('piwik_site_id', None))},
-            piwikHost: ${json.dumps(piwik_host)},
-            anonymous: ${json.dumps(node['anonymous'])},
+            isPublic: ${node.get('is_public', False) | json},
+            piwikSiteID: ${node.get('piwik_site_id', None) | json},
+            piwikHost: ${piwik_host | json},
+            anonymous: ${node['anonymous'] | json},
             category: '${node['category_short']}',
-            parentTitle: ${json.dumps(parent_title) | n},
-            parentRegisterUrl: '${parent_registration_url}',
-            parentExists: ${'true' if parent_exists else 'false'}
+            parentTitle: ${parent_title | json, n},
+            parentRegisterUrl: ${parent_registration_url | json},
+            parentExists: ${bool(parent_exists) | json}
         }
     });
 

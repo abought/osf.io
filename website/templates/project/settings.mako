@@ -243,13 +243,12 @@
 % endfor
 
 <%def name="javascript_bottom()">
-    <% import json %>
     ${parent.javascript_bottom()}
     <script>
       window.contextVars = window.contextVars || {};
       window.contextVars.node = window.contextVars.node || {};
       window.contextVars.node.nodeType = '${node['node_type']}';
-      window.contextVars.nodeCategories = ${json.dumps(categories)};
+      window.contextVars.nodeCategories = ${categories | json };
     </script>
 
     <script type="text/javascript" src=${"/static/public/js/project-settings-page.js" | webpack_asset}></script>

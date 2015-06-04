@@ -247,14 +247,12 @@
 
 <%def name="javascript_bottom()">
     ${parent.javascript_bottom()}
-    <% import json %>
-
     <script type="text/javascript">
       window.contextVars = window.contextVars || {};
-      window.contextVars.user = ${json.dumps(user)};
-      window.contextVars.isRegistration = ${json.dumps(node['is_registration'])};
-      window.contextVars.contributors = ${json.dumps(contributors)};
-      window.contextVars.adminContributors = ${json.dumps(adminContributors)};
+      window.contextVars.user = ${user | json };
+      window.contextVars.isRegistration = ${node['is_registration'] | json };
+      window.contextVars.contributors = ${contributors | json };
+      window.contextVars.adminContributors = ${adminContributors | json };
 
     </script>
     <script src=${"/static/public/js/sharing-page.js" | webpack_asset}></script>

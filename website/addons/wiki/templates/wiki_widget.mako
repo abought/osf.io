@@ -3,19 +3,18 @@
 
 <div id="markdownRender" class="break-word">
     % if wiki_content:
-        ${wiki_content | n}
+        ${wiki_content | n}  ## Relies on the view to pass in HTML-sanitized data
     % else:
         <p><em>No wiki content</em></p>
     % endif
 </div>
 
-<% import json %>
 <script>
     window.contextVars = $.extend(true, {}, window.contextVars, {
         wikiWidget: true,
-        usePythonRender: ${json.dumps(use_python_render)},
+        usePythonRender: ${use_python_render | json},
         urls: {
-            wikiContent: '${wiki_content_url}'
+            wikiContent: ${wiki_content_url | json}
         }
     })
 </script>

@@ -8,8 +8,10 @@
             <div class="modal-body">
                 <table class="table table-striped">
                     <thead>
+                    <tr>
                         <th>Title</th>
                         <th>Authors</th>
+                    </tr>
                     </thead>
                     <tbody data-bind="foreach: links">
                         <tr>

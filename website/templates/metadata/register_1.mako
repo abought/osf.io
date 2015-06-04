@@ -35,18 +35,17 @@
 
 </div><!-- end #registration_template -->
 
-<% import json %>
 <script type="text/javascript">
     ## Make Mako variables accessible to JS modules.
     ## TODO: This information should be fetched from a JSON endpoint.
     window.contextVars = window.contextVars || {};
     window.contextVars.node = window.contextVars.node || {};
     window.contextVars.node.urls = window.contextVars.node.urls || {};
-    window.contextVars.node.urls.api = ${json.dumps(node['api_url'])};
-    window.contextVars.node.id = ${json.dumps(str(node['id']))};
+    window.contextVars.node.urls.api = ${node['api_url'] | json};
+    window.contextVars.node.id = ${str(node['id']) | json};
     window.contextVars.node.children = ${[str(each) for each in children_ids]};
-    window.contextVars.regTemplate = ${json.dumps(template_name or '')};
+    window.contextVars.regTemplate = ${(template_name or '') | json};
     window.contextVars.regSchema = ${schema};
-    window.contextVars.regPayload = ${json.dumps(payload)};
-    window.contextVars.registered = ${json.dumps(int(registered))};
+    window.contextVars.regPayload = ${payload | json };
+    window.contextVars.registered = ${int(registered) | json };
 </script>

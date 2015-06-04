@@ -1,4 +1,4 @@
-<%inherit file="project/project_base.mako"/>
+w<%inherit file="project/project_base.mako"/>
 <%def name="title()">${node['title']} Forks</%def>
 
 <div class="page-header visible-xs">
