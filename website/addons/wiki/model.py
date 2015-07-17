@@ -88,7 +88,8 @@ def render_content(content, node):
         ]
     )
 
-    # linkify gets called after santize, because we're adding rel="nofollow"
+    ## TODO: Do we still depend on linkify for a) Old content, and b) New content ? Can we remove this?
+    # linkify gets called after sanitize, because we're adding rel="nofollow"
     #   to <a> elements - but don't want to allow them for other elements.
     sanitized_content = sanitize(html_output, **settings.WIKI_WHITELIST)
     return sanitized_content

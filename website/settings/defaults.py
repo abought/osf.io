@@ -150,6 +150,7 @@ GRAVATAR_SIZE_DISCUSSION = 20
 # Conference options
 CONFERNCE_MIN_COUNT = 5
 
+# TODO: Deprecate the tag/attribute portions and test whether old content breaks; disc w/@brianjgeiger
 WIKI_WHITELIST = {
     'tags': [
         'a', 'abbr', 'acronym', 'b', 'bdo', 'big', 'blockquote', 'br',
@@ -196,8 +197,9 @@ CELERY_IMPORTS = (
 # Load addons from addons.json
 with open(os.path.join(ROOT, 'addons.json')) as fp:
     addon_settings = json.load(fp)
-    ADDONS_REQUESTED = addon_settings['addons']
-    ADDONS_ARCHIVABLE = addon_settings['addons_archivable']
+
+ADDONS_REQUESTED = addon_settings['addons']
+ADDONS_ARCHIVABLE = addon_settings['addons_archivable']
 
 ADDON_CATEGORIES = [
     'documentation',

@@ -2,7 +2,7 @@
 
     <div>
         <h4 class="addon-title">
-            <img class="addon-icon" src="${addon_icon_url}"></img>
+            <img class="addon-icon" src="${addon_icon_url}">
             GitHub
             <small class="authorized-by">
                 % if node_has_auth:
@@ -86,6 +86,8 @@
 
 <%def name="on_submit()">
     <script type="text/javascript">
-        window.contextVars = $.extend({}, window.contextVars, {'githubSettingsSelector': '#addonSettings${addon_short_name.capitalize()}'});
+        window.contextVars = $.extend({}, window.contextVars,
+                {'githubSettingsSelector': ${'#addonSettings' + addon_short_name.capitalize() | sjson, n }}
+        );
     </script>
 </%def>

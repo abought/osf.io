@@ -1,7 +1,7 @@
 <script type="text/javascript">
 window.contextVars = $.extend(true, {}, window.contextVars, {
     ${short_name}: {
-        folder_id: '${list_id | js_str}'
+        folder_id: ${ list_id | sjson, n }
     }
 });
 

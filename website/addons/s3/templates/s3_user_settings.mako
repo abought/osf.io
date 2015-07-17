@@ -2,12 +2,12 @@
     <span data-owner="user"></span>
     <div>
         <h4 class="addon-title">
-          <img class="addon-icon" src="${addon_icon_url}"></img>
+          <img class="addon-icon" src="${addon_icon_url}">
             Amazon S3
 
             <small class="authorized-by">
                 % if has_auth:
-                    authorized by <a href=${profile_url}><em>${name}</em></a></th>
+                    authorized by <a href=${profile_url}><em>${name}</em></a>
                     <a id="s3RemoveAccess" class="text-danger pull-right addon-auth">Disconnect Account</a>
                 % endif
             </small>
@@ -39,7 +39,9 @@
 
 <%def name="on_submit()">
     <script type="text/javascript">
-        window.contextVars = $.extend({}, window.contextVars, {'addonSettingsSelector': '#addonSettings${addon_short_name.capitalize()}'});
+        window.contextVars = $.extend({}, window.contextVars,
+                {'addonSettingsSelector': ${'#addonSettings' + addon_short_name.capitalize() | sjson, n }}
+        );
     </script>
 </%def>
 
