@@ -217,12 +217,16 @@ def render_mako_string(tpldir, tplname, data, trust=True):
 
     lookup_obj = _TPL_LOOKUP_SAFE if trust is False else _TPL_LOOKUP
 
+    # Should mako replace rendered template (or cryptic traceback) with helpful HTML explanation of error?
+    show_errors = settings.DEBUG_MODE
+
     tpl = mako_cache.get(tplname)
     if tpl is None:
         with open(os.path.join(tpldir, tplname)) as f:
             tpl_text = f.read()
         tpl = Template(
             tpl_text,
+            format_exceptions=show_errors,
             lookup=lookup_obj,
             input_encoding='utf-8',
             output_encoding='utf-8',
