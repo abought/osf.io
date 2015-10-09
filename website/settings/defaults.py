@@ -79,6 +79,9 @@ COOKIE_NAME = 'osf'
 # TODO: Override SECRET_KEY in local.py in production
 SECRET_KEY = 'CHANGEME'
 
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = True
+
 # Change if using `scripts/cron.py` to manage crontab
 CRON_USER = None
 

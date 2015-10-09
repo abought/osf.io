@@ -27,6 +27,9 @@ MAIL_PASSWORD = 'CHANGEME'
 COOKIE_NAME = 'osf'
 SECRET_KEY = "CHANGEME"
 
+SESSION_COOKIE_SECURE = False  # Don't require https when running locally
+
+
 ##### Celery #####
 ## Default RabbitMQ broker
 BROKER_URL = 'amqp://'

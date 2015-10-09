@@ -36,6 +36,9 @@ OSF_COOKIE_DOMAIN = None
 COOKIE_NAME = 'osf'
 SECRET_KEY = "CHANGEME"
 
+SESSION_COOKIE_SECURE = False  # Don't require https when running locally
+
+
 # Uncomment if GPG was installed with homebrew
 # GNUPG_BINARY = '/usr/local/bin/gpg'
 

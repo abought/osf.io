@@ -32,6 +32,10 @@ ALLOWED_HOSTS = [
     '.osf.io'
 ]
 
+# Session and cookie management
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+
 
 # Application definition
 
