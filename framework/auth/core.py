@@ -224,6 +224,15 @@ class User(GuidStoredObject, AddonModelMixin):
         'baiduScholar': u'http://xueshu.baidu.com/scholarID/{}'
     }
 
+    __indices__ = [
+        {
+            'unique': True,
+            'sparse': True,
+            'key_or_list': 'username',
+            'name': 'improved_unique_user'
+        }
+    ]
+
     # This is a GuidStoredObject, so this will be a GUID.
     _id = fields.StringField(primary=True)
 
@@ -231,7 +240,7 @@ class User(GuidStoredObject, AddonModelMixin):
     # This value is unique, but multiple "None" records exist for:
     #   * unregistered contributors where an email address was not provided.
     # TODO: Update mailchimp subscription on username change in user.save()
-    username = fields.StringField(required=False, unique=True, index=True)
+    username = fields.StringField(required=False, unique=True)  # Index created above
 
     # Hashed. Use `User.set_password` and `User.check_password`
     password = fields.StringField()
