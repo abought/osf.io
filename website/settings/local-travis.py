@@ -9,7 +9,11 @@ import inspect
 from . import defaults
 import os
 
+from modularodm import storage
+
 DB_PORT = 27017
+
+DB_BACKEND = storage.EphemeralStorage
 
 DEV_MODE = True
 DEBUG_MODE = True  # Sets app to debug mode, turns off template caching, etc.

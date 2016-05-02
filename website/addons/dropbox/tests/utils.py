@@ -6,13 +6,14 @@ from modularodm import storage
 
 from framework.mongo import set_up_storage
 
+from website import settings
 from website.addons.base.testing import OAuthAddonTestCaseMixin, AddonTestCase
 from website.addons.dropbox import MODELS
 from website.addons.dropbox.model import DropboxProvider
 from website.addons.dropbox.tests.factories import DropboxAccountFactory
 
 def init_storage():
-    set_up_storage(MODELS, storage_class=storage.MongoStorage)
+    set_up_storage(MODELS, storage_class=settings.DB_BACKEND)
 
 class DropboxAddonTestCase(OAuthAddonTestCaseMixin, AddonTestCase):
 

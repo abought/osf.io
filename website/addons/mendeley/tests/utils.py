@@ -3,11 +3,11 @@ from modularodm import storage
 
 from framework.mongo import set_up_storage
 
+from website import settings
 from website.addons.base.testing import OAuthAddonTestCaseMixin, AddonTestCase
 from website.addons.base.testing.utils import MockFolder
 from website.addons.mendeley.tests.factories import MendeleyAccountFactory
 from website.addons.mendeley.model import Mendeley
-
 from website.addons.mendeley import MODELS
 
 from json import dumps
@@ -24,7 +24,7 @@ class MendeleyTestCase(OAuthAddonTestCaseMixin, AddonTestCase):
         settings.save()
 
 def init_storage():
-    set_up_storage(MODELS, storage_class=storage.MongoStorage)
+    set_up_storage(MODELS, storage_class=settings.DB_BACKEND)
 
 
 mock_responses = {

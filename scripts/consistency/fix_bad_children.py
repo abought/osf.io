@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 def main():
-    # Set up MongoStorage backend
+    # Set up Storage backends
     init_app(set_backends=True, routes=False)
     if 'dry' in sys.argv:
         missing_child_errors, _ = find_missing_children(dryrun=True)

@@ -10,6 +10,9 @@ import json
 import hashlib
 from datetime import timedelta
 
+from modularodm import storage
+
+
 os_env = os.environ
 
 
@@ -143,6 +146,9 @@ DB_PORT = os_env.get('OSF_DB_PORT', 27017)
 DB_NAME = 'osf20130903'
 DB_USER = None
 DB_PASS = None
+
+# Set storage backend. Primarily intended for usage with Travis CI
+DB_BACKEND = storage.MongoStorage
 
 # Cache settings
 SESSION_HISTORY_LENGTH = 5

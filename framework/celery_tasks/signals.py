@@ -9,6 +9,7 @@ from modularodm import storage
 from framework.mongo import set_up_storage, StoredObject
 
 from website import models
+from website import settings
 
 
 @signals.task_prerun.connect
@@ -23,4 +24,4 @@ def clear_caches(*args, **kwargs):
 def attach_models(*args, **kwargs):
     """Attach models to database collections on worker initialization.
     """
-    set_up_storage(models.MODELS, storage.MongoStorage)
+    set_up_storage(models.MODELS, settings.DB_BACKEND)

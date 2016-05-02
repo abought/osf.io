@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from modularodm import Q
 from modularodm.exceptions import NoResultsFound
 from modularodm.query.query import RawQuery
-from modularodm.storage.mongostorage import MongoQuerySet
+from modularodm.storage.mongostorage import MongoQuerySet  # FIXME: How can we best decouple this from Mongo?
 
 
 class AffiliatedInstitutionsList(list):

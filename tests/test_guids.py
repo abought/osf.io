@@ -8,12 +8,12 @@ from tests.factories import NodeFactory
 
 from modularodm import Q
 from modularodm import fields
-from modularodm.storage.mongostorage import MongoStorage
 
 from framework.mongo import database
 from framework.guid.model import GuidStoredObject
 
 from website import models
+from website import settings
 
 
 class TestGuidStoredObject(OsfTestCase):
@@ -24,7 +24,7 @@ class TestGuidStoredObject(OsfTestCase):
             @property
             def deep_url(self):
                 return 'http://dinosaurs.sexy'
-        FakeSchema.set_storage(MongoStorage(database, 'fakeschema'))
+        FakeSchema.set_storage(settings.DB_BACKEND(database, 'fakeschema'))
         fake_guid = FakeSchema(_id='fake')
         fake_guid.save()
         guids = models.Guid.find(Q('_id', 'eq', 'fake'))

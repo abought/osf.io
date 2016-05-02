@@ -14,6 +14,7 @@ from tests.utils import mock_archive, assert_logs
 from framework.auth import Auth
 from framework.mongo import handlers
 
+from website import settings
 from website.exceptions import NodeStateError
 from website.project.model import ensure_schemas, Node, NodeLog
 from website.project.sanctions import Sanction, TokenApprovableSanction, EmailApprovableSanction, PreregCallbackMixin
@@ -49,7 +50,7 @@ class SanctionsTestCase(OsfTestCase):
         handlers.set_up_storage([
             SanctionTestClass,
             EmailApprovableSanctionTestClass
-        ], storage.MongoStorage)
+        ], settings.DB_BACKEND)
 
 class TestSanction(SanctionsTestCase):
 

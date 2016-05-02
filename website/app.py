@@ -19,7 +19,6 @@ from framework.postcommit_tasks import handlers as postcommit_handlers
 from framework.sentry import sentry
 from framework.celery_tasks import handlers as celery_task_handlers
 from framework.transactions import handlers as transaction_handlers
-from modularodm import storage
 from website.addons.base import init_addon
 from website.project.licenses import ensure_licenses
 from website.project.model import ensure_schemas, Node
@@ -100,7 +99,7 @@ def do_set_backends(settings):
     logger.debug('Setting storage backends')
     set_up_storage(
         website.models.MODELS,
-        storage.MongoStorage,
+        settings.DB_BACKEND,
         addons=settings.ADDONS_AVAILABLE,
     )
 

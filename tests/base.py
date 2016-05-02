@@ -139,7 +139,7 @@ class DbTestCase(unittest.TestCase):
         # this logic
         set_up_storage(
             website.models.MODELS,
-            storage.MongoStorage,
+            settings.DB_BACKEND,
             addons=settings.ADDONS_AVAILABLE,
         )
         cls.db = database_proxy
