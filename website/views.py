@@ -18,6 +18,7 @@ from framework.auth.forms import SignInForm, ResetPasswordForm, ForgotPasswordFo
 from framework.exceptions import HTTPError
 from framework.flask import redirect  # VOL-aware redirect
 from framework.forms import utils as form_utils
+from framework.routing import proxy_url
 
 from website.institutions.views import view_institution
 from website.models import Guid
@@ -231,7 +232,7 @@ def resolve_guid(guid, suffix=None):
         if not referent.deep_url:
             raise HTTPError(http.NOT_FOUND)
         url = _build_guid_url(urllib.unquote(referent.deep_url), suffix)
-        return redirect(url)
+        return proxy_url(url)
 
     # GUID not found; try lower-cased and redirect if exists
     guid_object_lower = Guid.load(guid.lower())

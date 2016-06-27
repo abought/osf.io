@@ -7,7 +7,7 @@ import json
 import logging
 import os
 
-from flask import make_response
+from flask import request, make_response
 import lxml.html
 from mako.lookup import TemplateLookup
 from mako.template import Template
@@ -260,6 +260,27 @@ def unpack(data, n=4):
     if not isinstance(data, tuple):
         data = (data,)
     return data + (None,) * (n - len(data))
+
+
+def proxy_url(url):
+    """Call Flask view function for a given URL.
+
+    :param url: URL to follow
+    :return: Return value of view function, wrapped in Werkzeug Response
+
+    """
+    # Get URL map, passing current request method; else method defaults to GET
+    match = app.url_map.bind('').match(url, method=request.method)
+    response = app.view_functions[match[0]](**match[1])
+
+    resp = make_response(response, 302)
+
+    if not resp.headers.get('Location'):
+        # Force the client to expand short GUID urls into longer resource URLs: osf.io/<guid> --> osf.io/project/<guid>
+        # Some views will perform further redirects under the hood; only rewrite the location header at end of response,
+        # if it hasn't already been set
+        resp.headers['Location'] = url
+    return resp
 
 
 def call_url(url, view_kwargs=None):
