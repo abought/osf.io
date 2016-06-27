@@ -1025,7 +1025,7 @@ class User(GuidStoredObject, AddonModelMixin):
 
     @property
     def url(self):
-        return '/{}/'.format(self._primary_key)
+        return '/profile/{}/'.format(self._primary_key)
 
     @property
     def api_url(self):

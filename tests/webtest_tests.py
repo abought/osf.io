@@ -51,7 +51,7 @@ class TestDisabledUser(OsfTestCase):
         self.user.save()
 
     def test_profile_disabled_returns_401(self):
-        res = self.app.get(self.user.url, expect_errors=True)
+        res = self.app.get(self.user.url, expect_errors=True, auto_follow=True)
         assert_equal(res.status_code, 410)
 
 
