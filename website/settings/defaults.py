@@ -15,7 +15,7 @@ os_env = os.environ
 
 
 def parent_dir(path):
-    '''Return the parent of a directory.'''
+    """Return the parent of a directory."""
     return os.path.abspath(os.path.join(path, os.pardir))
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -23,6 +23,7 @@ BASE_PATH = parent_dir(HERE)  # website/ directory
 APP_PATH = parent_dir(BASE_PATH)
 ADDON_PATH = os.path.join(BASE_PATH, 'addons')
 STATIC_FOLDER = os.path.join(BASE_PATH, 'static')
+EMBER_FOLDER = os.path.join(STATIC_FOLDER, 'ember')
 STATIC_URL_PATH = '/static'
 ASSET_HASH_PATH = os.path.join(APP_PATH, 'webpack-assets.json')
 ROOT = os.path.join(BASE_PATH, '..')

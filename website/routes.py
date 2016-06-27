@@ -156,6 +156,16 @@ def robots():
     )
 
 
+def ember_app():
+    """Serve the contents of the ember application"""
+    # Be sure to build the flask app first, and adjust asset paths in index.html:
+    #   ember build --output-path <STATIC_FOLDER>/ember --watch
+    return send_from_directory(
+        settings.EMBER_FOLDER,
+        'index.html'
+    )
+
+
 def goodbye():
     # Redirect to dashboard if logged in
     if _get_current_user():
@@ -214,6 +224,11 @@ def make_url_map(app):
     process_rules(app, [
         Rule('/favicon.ico', 'get', favicon, json_renderer),
         Rule('/robots.txt', 'get', robots, json_renderer),
+    ])
+
+    # Ember routes
+    process_rules(app, [
+        Rule('/ember-page', 'get', ember_app, json_renderer)
     ])
 
     ### Base ###
