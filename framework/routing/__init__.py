@@ -273,13 +273,18 @@ def proxy_url(url):
     match = app.url_map.bind('').match(url, method=request.method)
     response = app.view_functions[match[0]](**match[1])
 
-    resp = make_response(response, 302)
+    resp = make_response(response)
 
     if not resp.headers.get('Location'):
         # Force the client to expand short GUID urls into longer resource URLs: osf.io/<guid> --> osf.io/project/<guid>
         # Some views will perform further redirects under the hood; only rewrite the location header at end of response,
         # if it hasn't already been set
         resp.headers['Location'] = url
+
+    # If a GET request would have returned a 200-series code, replace it with a redirect code. This supports views that
+    # choose to return 301, 301, 400, etc.
+    if request.method == 'GET' and resp.status_code < 300:
+        resp.status_code = 302
     return resp
 
 
