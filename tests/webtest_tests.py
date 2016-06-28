@@ -128,7 +128,7 @@ class TestAUser(OsfTestCase):
             self.user,
             permissions=['read', 'write', 'admin'],
             save=True)
-        res = self.app.get('/{0}/settings/'.format(project._primary_key), auth=self.auth, auto_follow=True)
+        res = self.app.get('/{0}/settings/'.format(project._primary_key), auth=self.auth).follow(auth=self.auth)
         assert_in('OSF Storage', res)
 
     @unittest.skip("Can't test this, since logs are dynamically loaded")

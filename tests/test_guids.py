@@ -40,7 +40,7 @@ class TestResolveGuid(OsfTestCase):
         self.node = NodeFactory()
 
     def test_resolve_guid(self):
-        res_guid = self.app.get(self.node.web_url_for('node_setting', _guid=True), auth=self.node.creator.auth)
+        res_guid = self.app.get(self.node.web_url_for('node_setting', _guid=True), auth=self.node.creator.auth).follow(auth=self.node.creator.auth)
         res_full = self.app.get(self.node.web_url_for('node_setting'), auth=self.node.creator.auth)
         assert_equal(res_guid.text, res_full.text)
 

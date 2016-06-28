@@ -232,7 +232,8 @@ def resolve_guid(guid, suffix=None):
         if not referent.deep_url:
             raise HTTPError(http.NOT_FOUND)
         url = _build_guid_url(urllib.unquote(referent.deep_url), suffix)
-        return proxy_url(url)
+        url += '?' + request.query_string
+        return redirect(url)
 
     # GUID not found; try lower-cased and redirect if exists
     guid_object_lower = Guid.load(guid.lower())

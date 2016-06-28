@@ -667,6 +667,7 @@ class TestAddonFileViews(OsfTestCase):
         resp = self.app.get('/{}/?action=download'.format(guid._id), auth=self.user.auth)
 
         assert_equals(resp.status_code, 302)
+        resp = resp.follow(auth=self.user.auth)
         location = furl.furl(resp.location)
         assert_urls_equal(location.url, file_node.generate_waterbutler_url(action='download', direct=None, version=None))
 
@@ -677,6 +678,7 @@ class TestAddonFileViews(OsfTestCase):
         resp = self.app.get('/{}/?action=download&revision=1'.format(guid._id), auth=self.user.auth)
 
         assert_equals(resp.status_code, 302)
+        resp = resp.follow(auth=self.user.auth)
         location = furl.furl(resp.location)
         # Note: version is added but us but all other url params are added as well
         assert_urls_equal(location.url, file_node.generate_waterbutler_url(action='download', direct=None, revision=1, version=None))
@@ -710,7 +712,7 @@ class TestAddonFileViews(OsfTestCase):
 
         mock_view_file.return_value = self.get_mako_return()
 
-        self.app.get('/{}/'.format(guid._id), auth=self.user.auth)
+        self.app.get('/{}/'.format(guid._id), auth=self.user.auth).follow(auth=self.user.auth)
 
         args, kwargs = mock_view_file.call_args
         assert_equals(kwargs, {})
@@ -722,15 +724,19 @@ class TestAddonFileViews(OsfTestCase):
     def test_download_create_guid(self):
         file_node = self.get_test_file()
         assert_is(file_node.get_guid(), None)
+        url = self.project.web_url_for(
+            'addon_view_or_download_file',
+            path=file_node.path.strip('/'),
+            provider='github'
+        )
 
         self.app.get(
-            self.project.web_url_for(
-                'addon_view_or_download_file',
-                path=file_node.path.strip('/'),
-                provider='github',
-            ),
+            url,
             auth=self.user.auth
         )
+
+        # TODO: This test relies on the file not being rendered (github call = bad)
+        # PReviously, rewriting the long URL as a GUID did this as a side effect
 
         assert_true(file_node.get_guid())
 
@@ -792,14 +798,17 @@ class TestAddonFileViews(OsfTestCase):
         guid = file_node.get_guid(create=True)
 
         resp = self.app.head('/{}/'.format(guid._id), auth=self.user.auth)
+        print 'resp loc', resp.location
+        resp.follow(auth=self.user.auth)
         location = furl.furl(resp.location)
+        print '=======', resp.location
         assert_urls_equal(location.url, file_node.generate_waterbutler_url(direct=None, version=None))
 
     def test_head_returns_url_with_version(self):
         file_node = self.get_test_file()
         guid = file_node.get_guid(create=True)
 
-        resp = self.app.head('/{}/?revision=1&foo=bar'.format(guid._id), auth=self.user.auth)
+        resp = self.app.head('/{}/?revision=1&foo=bar'.format(guid._id), auth=self.user.auth).follow(auth=self.user.auth)
         location = furl.furl(resp.location)
         # Note: version is added but us but all other url params are added as well
         assert_urls_equal(location.url, file_node.generate_waterbutler_url(direct=None, revision=1, version=None, foo='bar'))
@@ -1021,6 +1030,8 @@ class TestLegacyViews(OsfTestCase):
         )
         res = self.app.get(url, auth=self.user.auth)
         assert_equal(res.status_code, 301)
+        res = res.follow(auth=self.user.auth)
+
         expected_url = self.project.web_url_for(
             'addon_view_or_download_file',
             path=self.expected_path,

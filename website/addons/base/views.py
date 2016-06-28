@@ -621,7 +621,7 @@ def addon_view_or_download_file(auth, path, provider, **kwargs):
     file_node = FileNode.resolve_class(provider, FileNode.FILE).get_or_create(node, path)
 
     # Note: Cookie is provided for authentication to waterbutler
-    # it is overriden to force authentication as the current user
+    # it is overridden to force authentication as the current user
     # the auth header is also pass to support basic auth
     version = file_node.touch(
         request.headers.get('Authorization'),
@@ -644,6 +644,7 @@ def addon_view_or_download_file(auth, path, provider, **kwargs):
         return redirect(file_node.generate_waterbutler_url(**dict(extras, direct=None, version=version.identifier)))
 
     if len(request.path.strip('/').split('/')) > 1:
+        # TODO: "not a guid so don't render"
         guid = file_node.get_guid(create=True)
         return redirect(furl.furl('/{}/'.format(guid._id)).set(args=extras).url)
 

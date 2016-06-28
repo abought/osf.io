@@ -666,13 +666,13 @@ class TestUser(OsfTestCase):
     def test_url(self):
         assert_equal(
             self.user.url,
-            '/{0}/'.format(self.user._primary_key)
+            '/profile/{0}/'.format(self.user._primary_key)
         )
 
     def test_absolute_url(self):
         assert_equal(
             self.user.absolute_url,
-            urlparse.urljoin(settings.DOMAIN, '/{0}/'.format(self.user._primary_key))
+            urlparse.urljoin(settings.DOMAIN, '/profile/{0}/'.format(self.user._primary_key))
         )
 
     def test_profile_image_url(self):
