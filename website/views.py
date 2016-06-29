@@ -232,6 +232,7 @@ def resolve_guid(guid, suffix=None):
         if not referent.deep_url:
             raise HTTPError(http.NOT_FOUND)
         url = _build_guid_url(urllib.unquote(referent.deep_url), suffix)
+        # TODO: Use furl etc to add url params
         url += '?' + request.query_string
         return redirect(url)
 

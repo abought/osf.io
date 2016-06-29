@@ -193,7 +193,7 @@ class TestAUser(OsfTestCase):
             permissions=['read', 'write', 'admin'],
             save=True)
         # User goes to the project page
-        res = self.app.get(project.url, auth=self.auth).maybe_follow()
+        res = self.app.get(project.url, auth=self.auth).maybe_follow(auth=self.auth)
         assert_in('Make Private', res)
 
     def test_cant_see_make_private_button_if_not_admin(self):

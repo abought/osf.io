@@ -643,10 +643,12 @@ def addon_view_or_download_file(auth, path, provider, **kwargs):
     if action == 'download':
         return redirect(file_node.generate_waterbutler_url(**dict(extras, direct=None, version=version.identifier)))
 
-    if len(request.path.strip('/').split('/')) > 1:
-        # TODO: "not a guid so don't render"
-        guid = file_node.get_guid(create=True)
-        return redirect(furl.furl('/{}/'.format(guid._id)).set(args=extras).url)
+    # Ensure that the file has an associated GUID: create if one does not exist
+    guid = file_node.get_guid(create=True)
+    # if len(request.path.strip('/').split('/')) > 1:
+    #     # TODO: "not a guid so don't render"
+    #     guid = file_node.get_guid(create=True)
+    #     return redirect(furl.furl('/{}/'.format(guid._id)).set(args=extras).url)
 
     return addon_view_file(auth, node, file_node, version)
 

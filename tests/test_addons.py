@@ -644,22 +644,6 @@ class TestAddonFileViews(OsfTestCase):
         ret.update(rubeus.collect_addon_assets(self.project))
         return ret
 
-    def test_redirects_to_guid(self):
-        file_node = self.get_test_file()
-        guid = file_node.get_guid(create=True)
-
-        resp = self.app.get(
-            self.project.web_url_for(
-                'addon_view_or_download_file',
-                path=file_node.path.strip('/'),
-                provider='github'
-            ),
-            auth=self.user.auth
-        )
-
-        assert_equals(resp.status_code, 302)
-        assert_equals(resp.location, 'http://localhost:80/{}/'.format(guid._id))
-
     def test_action_download_redirects_to_download(self):
         file_node = self.get_test_file()
         guid = file_node.get_guid(create=True)
@@ -693,7 +677,8 @@ class TestAddonFileViews(OsfTestCase):
 
         mock_view_file.return_value = self.get_mako_return()
 
-        self.app.get('/{}/?action=view'.format(guid._id), auth=self.user.auth)
+        res = self.app.get('/{}/?action=view'.format(guid._id), auth=self.user.auth)
+        res.maybe_follow(auth=self.user.auth)
 
         args, kwargs = mock_view_file.call_args
         assert_equals(kwargs, {})
@@ -721,7 +706,8 @@ class TestAddonFileViews(OsfTestCase):
         assert_equals(args[2], file_node)
         assert_true(isinstance(args[3], file_node.touch(None).__class__))
 
-    def test_download_create_guid(self):
+    @mock.patch('website.addons.base.views.addon_view_file')
+    def test_download_create_guid(self, mock_view_file):
         file_node = self.get_test_file()
         assert_is(file_node.get_guid(), None)
         url = self.project.web_url_for(
@@ -733,14 +719,12 @@ class TestAddonFileViews(OsfTestCase):
         self.app.get(
             url,
             auth=self.user.auth
-        )
-
-        # TODO: This test relies on the file not being rendered (github call = bad)
-        # PReviously, rewriting the long URL as a GUID did this as a side effect
+        ).maybe_follow(auth=self.user.auth)
 
         assert_true(file_node.get_guid())
 
-    def test_view_file_does_not_delete_file_when_requesting_invalid_version(self):
+    @mock.patch('website.addons.base.views.addon_view_file')
+    def test_view_file_does_not_delete_file_when_requesting_invalid_version(self, mock_view_file):
         with mock.patch('website.addons.github.model.GitHubNodeSettings.is_private',
                         new_callable=mock.PropertyMock) as mock_is_private:
             mock_is_private.return_value = False
