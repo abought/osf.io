@@ -11,6 +11,7 @@ from api.base import permissions as base_permissions
 from api.base.views import JSONAPIBaseView
 from api.base.utils import get_object_or_error, is_truthy
 from api.guids.serializers import GuidSerializer
+from api.nodes.serializers import NodeSerializer
 
 
 class GuidDetail(JSONAPIBaseView, generics.RetrieveAPIView):
@@ -35,7 +36,7 @@ class GuidDetail(JSONAPIBaseView, generics.RetrieveAPIView):
     view_category = 'guids'
     view_name = 'guid-detail'
 
-    serializer_class = GuidSerializer
+    serializer_class = NodeSerializer
 
     @staticmethod
     def should_resolve(request):
@@ -53,7 +54,7 @@ class GuidDetail(JSONAPIBaseView, generics.RetrieveAPIView):
             Guid,
             self.kwargs['guids'],
             display_name='guid'
-        )
+        ).referent
 
     def get(self, request, **kwargs):
         if not self.should_resolve(self.request):
